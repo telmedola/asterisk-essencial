@@ -1,0 +1,42 @@
+#!/usr/bin/php
+
+#Iniciando o script em PHP
+<?php
+//Importando a biblioteca
+require(__DIR__."/phpagi/src/phpagi.php");
+//Importando a classe de conexao com o banco feito no CDR
+require("/var/www/html/cdr-web/classebanco.php");
+
+//Extraindo o parametro vindo do asterisk
+$documento = $argv[1];
+
+//Instanciando e criando objeto da biblioteca
+$agi = new AGI();
+$agi->verbose("Documento informado: ". $documento);
+
+fwrite (STDOUT, "SET VARIABLE resultado  1");
+fflush($stdout);
+
+$conexao = new conexao_astersk();
+$conexao->conectar();
+
+$sql = "select atraso, nome from clientes where documento = '". $documento ."'";
+
+$agi->verbose(".");
+
+$query = $conexao->open_query($sql);
+
+$query->bind_result($atraso,$nome);
+
+$query->fetch();
+  
+$agi->verbose("Cliente: ". $nome ." esta com status: ". $atraso );
+
+if (empty($nome)){
+   $atraso = -1;
+}
+fwrite (STDOUT, "SET VARIABLE resultado ". $atraso);
+fflush($stdout);
+
+?>
+

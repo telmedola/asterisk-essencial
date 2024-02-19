@@ -1,0 +1,28 @@
+#!/usr/bin/php
+
+<?php
+//Importando a biblioteca 
+require(__DIR__."/phpagi/src/phpagi.php");
+
+//Extraindo o parametro vindo do asterisk
+$parametro1 = $argv[1];
+
+//Instanciando e criando objeto da biblioteca
+$agi = new AGI();
+$agi->verbose("Parametro 1 informado: ". $parametro1);
+
+//Exibindo o CallerID atraves da variavel do AGI
+$agi->verbose("CALLER ID: ". $agi->request[agi_callerid]);
+
+//Atribuindo a variavel do plano de execucao para uma variavel do PHP
+$callerid = $agi->request["agi_callerid"];
+
+//Exibindo outra variavel diretamente do plano de execucao do Asterisk
+$agi->verbose("Extension: ". $agi->request[agi_extension]);
+
+//Executando uma aplicacao direto no Asterisk
+$agi->exec('NoOp', '"Essa e uma mensagem teste vinda do AGI"');
+
+//Desligando a ligacao
+$agi->hangup();
+?>

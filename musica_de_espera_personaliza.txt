@@ -1,0 +1,10 @@
+#convertendo a musica mp3 para formato wav
+lame --decode queen_break_free.mp3 queen_break_free.wav
+
+#convertento o wav para sln
+sox queen_break_free.wav -t raw -r 8000 -c 1 queen_break_free.sln
+
+#criando nossa pasta para musica de espera
+mkdir /var/lib/asterisk/moh/teste
+#copiando o arquivo para nossa pasta
+cp queen_break_free.sln /var/lib/asterisk/moh/teste/
